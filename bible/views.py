@@ -7,6 +7,7 @@ from .serializers import BibleVerseSerializer
 
 class BibleVerseView(APIView):
     def get(self, request, book, chapter, verse):
+        book = book.capitalize()
         try:
             verse = BibleVerse.objects.get(book=book, chapter=chapter, verse=verse)
             serializer = BibleVerseSerializer(verse)
