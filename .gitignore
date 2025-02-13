@@ -35,5 +35,5 @@ htmlcov/
 # Docker
 *.pid
 
-bible_source/
-insert_bible_verses.py
+# bible_source/
+# insert_bible_verses.py
