@@ -8,6 +8,7 @@ services:
       - "8000:8000"
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
     depends_on:
       - db
 
