@@ -24,9 +24,9 @@ services:
     image: postgres:14
     container_name: bible_db
     environment:
-      POSTGRES_USER: bible_user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: bible_db
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
