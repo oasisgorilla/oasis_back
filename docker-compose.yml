@@ -6,9 +6,18 @@ services:
     container_name: bible_backend
     ports:
       - "8000:8000"
-
+    environment:
+      - DB_ENGINE=${DB_ENGINE}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
     depends_on:
       - db
+    networks:
+      - bible_network
 
   frontend:
     build: ../j316_front/bible-website
@@ -17,6 +26,8 @@ services:
       - "4173:4173"
     depends_on:
       - backend
+    networks:
+      - bible_network
 
   db:
     image: postgres:14
