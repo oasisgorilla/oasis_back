@@ -29,3 +29,14 @@ services:
       POSTGRES_DB: bible_db
     ports:
       - "5432:5432"
+    volumes:
+      - bible_db_data:/var/lib/postgresql/data
+    networks:
+      - bible_network
+
+volumes:
+  bible_db_data:  # 볼륨 정의
+
+networks:
+  bible_network:
+    driver: bridge
