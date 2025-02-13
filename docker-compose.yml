@@ -8,13 +8,13 @@ services:
       - "8000:8000"
     environment:
       - DJANGO_SETTINGS_MODULE: config.settings
-      - DB_ENGINE: django.db.backends.postgresql
-      - DB_NAME: bible_db
-      - DB_USER: bible_user
-      - DB_PASSWORD: godlovesyou
-      - DB_HOST: db
-      - DB_PORT: 5432
-      - DJANGO_SECRET_KEY: django-insecure-8m)f=4)en0*zub9f%+tz&oyfe$@)%@t96_c0_g@+=y__h7*!)_
+      - DB_ENGINE: ${DB_ENGINE}
+      - DB_NAME: ${DB_NAME}
+      - DB_USER: ${DB_USER}
+      - DB_PASSWORD: ${DB_PASSWORD}
+      - DB_HOST: ${DB_HOST}
+      - DB_PORT: ${DB_PORT}
+      - DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
     depends_on:
       - db
 
