@@ -6,15 +6,7 @@ services:
     container_name: bible_backend
     ports:
       - "8000:8000"
-    environment:
-      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
-      - DB_ENGINE=${DB_ENGINE}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+
     depends_on:
       - db
 
