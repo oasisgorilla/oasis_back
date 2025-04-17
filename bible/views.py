@@ -29,31 +29,29 @@ class BibleChapterView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=500)
 
+class LlamaChatView(APIView):
     def post(self, request):
+        prompt = request.data.get("prompt")
+        if not prompt:
+            return Response({"error": "Prompt is required."}, status=400)
+
+        llama_api_url = "http://localhost:8080/completion"
+        headers = {
+            "Content-Type": "application/json",
+            "Accept-Encoding": "identity"  # gzip 비활성화
+        }
+        data = {
+            "prompt": prompt,
+            "n_predict": 128
+        }
+
         try:
-            # 프론트엔드에서 보낸 'prompt' 필드를 받아옵니다
-            prompt = request.data.get('prompt')
-            if not prompt:
-                return Response({"error": "prompt field is required"}, status=400)
-
-            # llama.cpp API로 요청 보내기
-            llama_api_url = "http://localhost:8080/completion"  # llama.cpp가 실행 중인 URL
-            headers = {
-                "Content-Type": "application/json"
-            }
-            data = {
-                "prompt": prompt,
-                "n_predict": 128  # 예시로 예측 토큰 수를 설정, 필요에 맞게 조정
-            }
-
-            # llama.cpp 서버로 POST 요청 보내기
             response = requests.post(llama_api_url, json=data, headers=headers)
+            llama_data = response.json()
 
-            if response.status_code == 200:
-                llama_data = response.json()
-                return Response({"reply": llama_data.get('content', "챗봇 응답에 실패했습니다.")})
-            else:
-                return Response({"error": "Failed to get response from llama.cpp"}, status=500)
+            return Response({
+                "reply": llama_data.get("content", "No response from Llama.")
+            })
 
         except Exception as e:
             return Response({"error": str(e)}, status=500)
