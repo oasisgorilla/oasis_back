@@ -48,10 +48,7 @@ class LlamaChatView(APIView):
         try:
             response = requests.post(llama_api_url, json=data, headers=headers)
             llama_data = response.json()
-
-            return Response({
-                "reply": llama_data.get("content", "No response from Llama.")
-            })
-
+            return Response({"reply": llama_data.get("content", "No response from Llama.")})
         except Exception as e:
+            print("🔥 Llama API Error:", str(e))  # 콘솔 로그 출력
             return Response({"error": str(e)}, status=500)
