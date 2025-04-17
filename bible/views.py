@@ -31,34 +31,29 @@ class BibleChapterView(APIView):
 
     def post(self, request):
         try:
-            user_message = request.data.get("message")  # 일반 텍스트 메시지 받기
-            if not user_message:
-                return Response({"error": "message 데이터가 없습니다."}, status=400)
+            # 프론트엔드에서 보낸 'prompt' 필드를 받아옵니다
+            prompt = request.data.get('prompt')
+            if not prompt:
+                return Response({"error": "prompt field is required"}, status=400)
 
-            response = self.get_llama_response(user_message)
-            return Response({"response": response})
+            # llama.cpp API로 요청 보내기
+            llama_api_url = "http://localhost:8080/completion"  # llama.cpp가 실행 중인 URL
+            headers = {
+                "Content-Type": "application/json"
+            }
+            data = {
+                "prompt": prompt,
+                "n_predict": 128  # 예시로 예측 토큰 수를 설정, 필요에 맞게 조정
+            }
+
+            # llama.cpp 서버로 POST 요청 보내기
+            response = requests.post(llama_api_url, json=data, headers=headers)
+
+            if response.status_code == 200:
+                llama_data = response.json()
+                return Response({"reply": llama_data.get('content', "챗봇 응답에 실패했습니다.")})
+            else:
+                return Response({"error": "Failed to get response from llama.cpp"}, status=500)
 
         except Exception as e:
             return Response({"error": str(e)}, status=500)
-
-    def get_llama_response(self, user_message):
-        llama_api_url = "http://localhost:8080/completion"
-        headers = {
-            "Content-Type": "application/json"
-        }
-
-        # 사용자 메시지 그대로 사용
-        prompt = user_message
-
-        data = {
-            "prompt": prompt,
-            "n_predict": 128
-        }
-
-        response = requests.post(llama_api_url, json=data, headers=headers)
-
-        if response.status_code == 200:
-            llama_data = response.json()
-            return llama_data.get('content', "응답 없음")
-        else:
-            return "챗봇 응답에 실패했습니다."
